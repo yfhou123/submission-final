@@ -174,6 +174,12 @@ L_reg = SmoothL1(PHQ_pred / 27, PHQ / 27)
 
 默认 `lambda_reg=5.0`。
 
+### ASR 转录和文本 embedding 生成
+
+文本模态来自本地部署的 Qwen3-ASR。具体做法是先使用 Qwen3-ASR 对脱敏后的原始音频进行逐 sample 转录，得到 `sample_transcriptions_qwen_asr.csv`。随后使用原工程中的 `MPDD/MPDD-AVG-2026/feature_extract/text/segment_asr_transcripts.py` 对每条转录文本按中文标点、最小长度、目标长度和最大 segment 数进行语义切段，生成 `sample_transcription_segments_qwen_asr.csv`。最后使用 `MPDD/MPDD-AVG-2026/feature_extract/text/extract_asr_segment_embeddings.py` 读取这些文本 segment，并调用本地中文文本编码器 `BAAI/bge-large-zh-v1.5` 将每个 sample 的多个 segment 编码成固定上限的句向量、mask 和 segment_count，保存为 `sample_text_segment_embeddings_qwen_asr_bge_large_zh.npy`。
+
+本提交包中已经完成上述 ASR、切段和文本编码步骤，可以直接使用相关文件
+
 ## 5. 生成 chunk-full A/V cache
 
 chunk-full 训练不在训练过程中直接读取每个 sample 的完整长序列特征，而是先把音视频特征预处理成 chunk cache。考虑文件大小问题，故没有在仓库中直接存放cache文件，需要用以下指令生成，并在运行前，将测试集和训练集的Video和Audio分别放在对应的文件夹下：
