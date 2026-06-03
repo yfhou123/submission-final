@@ -1,0 +1,13 @@
+{
+  "split_csv": "Elder-trainval/split_labels_train.csv",
+  "out_dir": "splits/elder_cv5_label3_seed3407",
+  "seed": 3407,
+  "n_splits": 5,
+  "label_col": "label3",
+  "label_counts": {
+    "0": 61,
+    "1": 16,
+    "2": 10
+  },
+  "folds": []
+}

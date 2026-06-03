@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.log
+.DS_Store
+
+logs/
+slurm_logs/
+predict_auto_selected/
+
+Elder-trainval/cached_av_chunks_c4_t128_mfcc2600/
+Elder-test/cached_av_chunks_c4_t128_mfcc2600/
+Elder-trainval/cached_av_features_t128/
+Elder-test/cached_av_features_t128/

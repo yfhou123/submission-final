@@ -1,0 +1,13 @@
+{
+  "model_path": "/home/yfhou/MPDD/MPDD-AVG-2026/models/Qwen2.5-72B-Instruct-AWQ",
+  "binary_csv": "/home/yfhou/MPDD/MPDD-AVG-2026/submission-final/predict/binary.csv",
+  "ternary_csv": "/home/yfhou/MPDD/MPDD-AVG-2026/submission-final/predict/ternary.csv",
+  "descriptions_csv": "/home/yfhou/MPDD/MPDD-AVG-2026/MPDD-AVG2026/MPDD-AVG2026-trainval/Elder/descriptions.csv",
+  "transcripts_csv": "/home/yfhou/MPDD/MPDD-AVG-2026/MPDD-AVG2026/MPDD-AVG2026-test/Elder/sample_transcriptions_qwen_asr.csv",
+  "n_samples": 10,
+  "temperature": 0.3,
+  "top_p": 0.9,
+  "formula": "corrected_phq9 = 0.9 * mean(qwen_parsed_phq9) + 0.1 * original_phq9_pred; PHQ class range is prompt-only",
+  "processed_new_subjects": 23,
+  "total_output_subjects": 23
+}
