@@ -23,8 +23,10 @@ submission-final/
 │   ├── cache_elder_av_chunks.py
 │   ├── make_elder_cv5_splits.py
 │   ├── run_chunkfull_cv5x20_binary.sh
-│   └── run_chunkfull_cv5x20_ternary.sh
+│   ├── run_chunkfull_cv5x20_ternary.sh
+│   └── run_chunkfull_fulltrain.sh
 ├── train_text_coral_attn_chunk_cache.py     # chunk-full 训练入口
+├── train_text_coral_attn_chunk_fulltrain.py # chunk-full 全量训练入口
 ├── train_score_loss_text_coral.py           # CORAL + PHQ 回归训练主逻辑
 ├── dataset_text_elder_chunk_cached.py       # 读取 chunk cache 的 Elder dataset
 ├── predict_chunkfull_5vote.py               # 5 模型投票预测测试集
@@ -329,6 +331,28 @@ logs/cv5x20_chunkfull/ternary/elder_chunkfull_c4t128_cv5x20_fold{fold}_seed{seed
 ```
 
 每个 fold/seed 都有独立文件夹，便于后续统计和选择模型。
+
+### 全量训练集固定 epoch 训练
+
+本研究还进行了一些补充实验。在完成常规 train/val 划分实验后，考虑到 Elder 数据量较小，从训练集中再划分验证集会进一步减少可用于参数更新的数据，并可能带来更大的划分波动，因此后续也尝试过使用训练集全量训练模型，并在若干固定 epoch 快照上进行结果验证。候选 epoch 包括 `10, 13, 17, 18, 24, 26, 37, 48, 52, 59`。在这些实验中，单模型二分类表现较好的组合包括 `seed=1009, epoch=17`、`seed=777, epoch=18`等；单模型三分类表现较好的组合包括 `seed=2701, epoch=37`、`seed=3583, epoch=52`等。
+
+如果不再从训练集中划分验证集，而是直接使用 `Elder-trainval/split_labels_train.csv` 中的全部训练样本进行参数更新，可以使用 `scripts/run_chunkfull_fulltrain.sh`。
+
+二分类示例：
+
+```bash
+cd submission-final
+
+TASK=binary TRAIN_SEEDS='1009' EPOCHS=17 bash scripts/run_chunkfull_fulltrain.sh
+```
+
+三分类示例：
+
+```bash
+cd submission-final
+
+TASK=ternary TRAIN_SEEDS='2701' EPOCHS=37 bash scripts/run_chunkfull_fulltrain.sh
+```
 
 ## 9. Qwen PHQ-9 后处理校正
 
